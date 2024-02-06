@@ -1,8 +1,8 @@
-const {Router} =require('express');
-const pricecontrol = require('../control/pricecontrol');
-const router = Router();
+const express =require('express');
+const calculateDeliveryCost = require('../control/pricecontrol');
+const router = express.Router();
 
-router.get('/', () => pricecontrol.getPrice);
+router.post('/calculate-cost', calculateDeliveryCost);
 
 
 module.exports = router;

@@ -1,12 +1,15 @@
-const pool = require('../../db');
+const {calculateTotalPrice} = require('../service/priceCalculator');
 
-const getPrice = (req,res) => {
-    pool.query("SELECT * FROM  organization", (error,results) =>{
-       if (error) throw error;
-       res.status(200).json(results.rows);
-    });
-};
+async function calculateDeliveryCost(req,res){
+    try{
+        const{organization_id , total_distance ,  item_type} = req.body;
+        const totalPrice = await calculateTotalPrice(organization_id,total_distance,item_type);
+        res.json({total_price : totalPrice});
+    }catch (error){
+        console.error('Error calculating delivery cost : ' , error);
+        res.status(500).json({error:'Internal server error'});
 
-module.exports = {
-    getPrice,
-};
+    }
+}
+
+module.exports = {calculateDeliveryCost};

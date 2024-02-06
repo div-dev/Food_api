@@ -1,15 +1,13 @@
-const Pool = require("pg").Pool;
+const express = require('express');
+const pricingRoute = require('./src/routes/pricingRoute');
 
-const pool = new Pool({
-    user:"postgres",
-    host:"localhost",
-    database:"food_api",
-    password: "130261",
-    port: 5432,
-});
+const app = express();
 
-pool.connect()
+app.use(express.json());
+app.use('/api/v1/food',pricingRoute);
+
+app.connect()
   .then(() => console.log('Connected to PostgreSQL'))
   .catch(err => console.error('Connection error', err.stack));
 
-module.exports = pool;
+module.exports = app;
